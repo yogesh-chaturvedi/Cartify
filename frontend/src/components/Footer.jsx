@@ -37,6 +37,7 @@ function Footer() {
                         To redefine online shopping by blending innovation, trust, and simplicity-creating an e-commerce platform that understands users, evolves with technology, and delivers value beyond products.
                     </p>
                 </div>
+                
             </div>
 
 
