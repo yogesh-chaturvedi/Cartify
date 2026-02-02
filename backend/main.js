@@ -38,12 +38,12 @@ app.use(
 // process.env.ORIGIN
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "https://cartify-ten-eta.vercel.app",
     credentials: true
 }))
 
 app.get('/', (req, res) => {
-    res.send('nz project')
+    res.send('cartify')
 })
 
 app.use('/auth', AuthRoute)
