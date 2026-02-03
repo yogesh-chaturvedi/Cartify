@@ -9,8 +9,7 @@ import { useEffect } from 'react';
 
 const BusinessSettingsForm = () => {
 
-    const { fetchSettings, settings, setSettings } = useContext(SettingsContext)
-    console.log("settings", settings)
+    const { settings } = useContext(SettingsContext)
 
     const [loading, setLoading] = useState(false)
 
@@ -64,7 +63,6 @@ const BusinessSettingsForm = () => {
 
             const { message, success } = resposne.data;
             if (success) {
-                console.log(message);
                 toast(message, {
                     position: "top-center",
                     autoClose: 1500,

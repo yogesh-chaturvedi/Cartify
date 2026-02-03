@@ -31,7 +31,6 @@ const MyOrders = () => {
     useEffect(() => {
         fetchUserOrder(user._id)
     }, [])
-    console.log("userOrders", userOrders)
 
 
 
@@ -40,7 +39,7 @@ const MyOrders = () => {
             <Navbar />
 
             <div className="min-h-screen bg-gray-100 px-6 py-10">
-                <div className="max-w-5xl mx-auto">
+                <div className="max-w-7xl mx-auto">
                     <h2 className="text-3xl font-bold mb-8">My Orders</h2>
 
                     {loading ? (
@@ -52,7 +51,7 @@ const MyOrders = () => {
                             You have not placed any orders yet.
                         </p>
                     ) : (
-                        <div className="space-y-6 max-h-[calc(100vh-180px)] overflow-y-auto">
+                        <div className="space-y-6 max-h-[calc(100vh-180px)] overflow-y-auto no-scrollbar">
                             {userOrders?.map((order) => (
                                 <div
                                     key={order._id}

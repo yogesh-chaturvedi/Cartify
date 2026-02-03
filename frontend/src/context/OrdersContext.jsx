@@ -31,7 +31,6 @@ export const OrdersContextProvider = (props) => {
 
             const { message, success, orders, pagination } = resposne.data;
             if (success) {
-                console.log(message)
                 setAllOrders(orders)
                 setPage(pagination.currentPage)
                 setTotalPages(pagination.totalPages)

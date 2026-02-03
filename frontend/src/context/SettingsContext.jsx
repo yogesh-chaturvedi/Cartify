@@ -8,7 +8,6 @@ export const SettingsContextProvider = (props) => {
 
     const [settings, setSettings] = useState(null);
 
-
     async function fetchSettings() {
         try {
             const resposne = await axios({
@@ -19,7 +18,6 @@ export const SettingsContextProvider = (props) => {
 
             const { message, success, allSettings } = resposne.data;
             if (success) {
-                console.log(message)
                 setSettings(allSettings)
             }
         }
@@ -27,7 +25,6 @@ export const SettingsContextProvider = (props) => {
             console.error('settingsFunc error', error)
         }
     }
-
 
     useEffect(() => {
         fetchSettings()

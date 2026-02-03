@@ -13,7 +13,6 @@ const AddProducts = () => {
 
     const { productId } = useParams();
     const isEditMode = Boolean(productId);
-    // console.log("isEditMode", isEditMode)
 
     const [product, setProduct] = useState(null)
 
@@ -56,12 +55,8 @@ const AddProducts = () => {
         setProductDetails((prev) => ({ ...prev, [name]: value }))
     }
 
-    // console.log('productDetails', productDetails)
-    // console.log('id', productId)
-
 
     function handleCheckBox(e) {
-        // console.log(e.target.name, e.target.value)
         const { name, checked } = e.target;
         setCheckBoxes((prev) => ({ ...prev, [name]: checked }))
     }
@@ -73,7 +68,6 @@ const AddProducts = () => {
             price: '',
             stock: '',
             category: '',
-            dimensions: '',
             description: ''
         });
 
@@ -87,7 +81,6 @@ const AddProducts = () => {
         });
     }
 
-
     async function fetchSingleProduct(productId) {
         try {
             const response = await axios({
@@ -97,7 +90,6 @@ const AddProducts = () => {
             })
             const { message, success, product } = response.data;
             if (success) {
-                console.log(message);
                 setProduct(product);
             }
         }
@@ -110,10 +102,6 @@ const AddProducts = () => {
             fetchSingleProduct(productId);
         }
     }, [isEditMode, productId]);
-
-    console.log('product', product)
-
-    // const pp = product?.productSizes.map((item, index) => console.log(item))
 
 
     useEffect(() => {
@@ -151,7 +139,6 @@ const AddProducts = () => {
             })
             const { message, success } = response.data;
             if (success) {
-                console.log(message)
                 toast(message, {
                     position: "top-center",
                     autoClose: 1500,
@@ -283,7 +270,6 @@ const AddProducts = () => {
     return (
 
         <div className='flex'>
-            {/* <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" /> */}
 
             <Sidebar />
 

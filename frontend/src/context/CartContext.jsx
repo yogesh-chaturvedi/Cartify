@@ -22,7 +22,6 @@ export const CartContextProvider = (props) => {
 
             const { message, success, userCart } = resposne.data;
             if (success) {
-                console.log(message)
                 setCart(userCart)
             }
         }

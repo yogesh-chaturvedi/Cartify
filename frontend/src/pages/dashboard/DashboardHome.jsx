@@ -16,10 +16,7 @@ const DashboardHome = () => {
     const usersOnly = allUsers.filter((user) => user.role !== "admin")
     const topTwoUsers = usersOnly.slice(0, 2);
 
-    console.log("allorders", allOrders)
-
     const PaidOrders = allOrders.filter((order) => order.paymentStatus === "PAID")
-    console.log('paidorders', PaidOrders)
 
     // calculate total price for only paid products 
     const totalRevenue = PaidOrders.reduce(
@@ -52,7 +49,7 @@ const DashboardHome = () => {
 
                         <div className="bg-white p-6 rounded-xl shadow border">
                             <h2 className="text-gray-600">Total Users</h2>
-                            <p className="text-3xl font-bold mt-2">{allUsers?.length - 1}</p>
+                            <p className="text-3xl font-bold mt-2">{allUsers?.length}</p>
                         </div>
 
                         <div className="bg-white p-6 rounded-xl shadow border">

@@ -30,7 +30,6 @@ const Signup = () => {
       })
       const { message, success } = response.data;
       if (success) {
-        console.log(message)
         toast(message, {
           position: "top-center",
           autoClose: 1500,
@@ -135,17 +134,6 @@ const Signup = () => {
               <p className="text-red-400 text-sm">{errors.password.message}</p>
             )}
           </div>
-
-
-          {/* Confirm Password
-          <div>
-            <label className="text-gray-200 block mb-1">Confirm Password</label>
-            <input
-              type="password"
-              className="w-full px-4 py-2 rounded-lg bg-white/20 text-white placeholder-gray-300 outline-none focus:ring-2 focus:ring-blue-400"
-              placeholder="Re-enter your password"
-            />
-          </div> */}
 
           {/* Button */}
           <button className={`w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 rounded-lg transition flex items-center justify-center ${signupLoading ? "opacity-70 cursor-not-allowed" : ""}`}>

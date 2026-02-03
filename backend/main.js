@@ -35,8 +35,6 @@ app.use(
 );
 
 
-// process.env.ORIGIN
-
 app.use(cors({
     origin: "https://cartify-ten-eta.vercel.app",
     credentials: true

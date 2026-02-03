@@ -21,7 +21,6 @@ const OrderDetails = () => {
 
     const { orderId } = useParams();
     const [order, setOrder] = useState(null);
-    console.log('order view page', order)
 
     const [newStatus, setNewStatus] = useState('')
 
@@ -41,7 +40,6 @@ const OrderDetails = () => {
 
             const { message, success, order } = resposne.data;
             if (success) {
-                console.log(message)
                 setOrder(order)
             }
         }
@@ -101,7 +99,6 @@ const OrderDetails = () => {
         }
         setStatus();
     }, [newStatus])
-
 
     if (!order) return <p className='text-4xl font-bold flex items-center justify-center'>Loading...</p>;
 

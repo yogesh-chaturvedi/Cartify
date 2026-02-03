@@ -7,7 +7,7 @@ import OrderSettingsForm from '../../components/settingsComponents/OrderSettings
 
 const Settings = () => {
 
-
+    
     return (
 
         <div className='flex'>

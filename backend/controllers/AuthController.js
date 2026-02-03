@@ -13,7 +13,6 @@ const formatName = (fullName) => {
         .join(" ");
 };
 
-
 // signup controller function
 const signupController = async (req, res) => {
 
@@ -56,7 +55,6 @@ const signupController = async (req, res) => {
         res.status(500).json({ message: 'Signup error', success: false })
     }
 }
-
 
 // login validation function
 const loginController = async (req, res) => {

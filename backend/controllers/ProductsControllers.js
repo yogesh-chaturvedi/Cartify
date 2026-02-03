@@ -2,6 +2,7 @@ const ProductModels = require('../models/Products')
 const mongoose = require('mongoose')
 const cloudinary = require('../cloudinary')
 
+// to add new products
 const addProductsControllers = async (req, res) => {
     try {
         const { title, price, category, description, isActive, featured, size, sizeQyt } = req.body;
@@ -60,7 +61,6 @@ const fetchProductsControllers = async (req, res) => {
             search = "",
             sort = "date-new"
         } = req.query;
-
 
         const skip = (page - 1) * limit;
         let query = {};
@@ -157,7 +157,6 @@ const editProductsControllers = async (req, res) => {
         // to edit size's quantiy
         if (size) {
             const index = product.productSizes.findIndex((p) => p.size === size.toUpperCase())
-            // console.log("index", index)
 
             if (index !== -1) {
                 // product.productSizes[index].size = size;

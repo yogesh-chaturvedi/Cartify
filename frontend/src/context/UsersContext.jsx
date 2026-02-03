@@ -31,7 +31,6 @@ export const UsersContextProvider = (props) => {
 
             const { message, success, users, pagination } = resposne.data;
             if (success) {
-                console.log(message)
                 setAllUsers(users)
                 setPage(pagination.currentPage)
                 setTotalPages(pagination.totalPages)

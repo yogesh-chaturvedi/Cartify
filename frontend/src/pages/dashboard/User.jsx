@@ -72,14 +72,12 @@ const User = () => {
         });
     }, [page, Sortby]);
 
-
     return (
         <div className='flex'>
             <Sidebar />
             <div className="pt-6 px-6 w-full">
 
                 {/* ---------- Header ---------- */}
-
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 p-4 bg-white shadow rounded-lg">
 
                     {/* search bar */}
@@ -120,11 +118,10 @@ const User = () => {
 
                 </div>
 
-
                 {/* ---------- User List Container ---------- */}
-                <div className="space-y-4 overflow-y-auto max-h-[calc(100vh-150px)]">
+                <div className="space-y-4 overflow-y-auto max-h-[calc(100vh-150px)] no-scrollbar">
 
-                    {/* ---------- Single User Card ---------- */}
+                    {/* ---------- User Card ---------- */}
                     {allUsers.map((user) => {
                         return (<div key={user._id} className="w-full p-4 border rounded-xl shadow-sm flex items-center justify-between">
                             <div>

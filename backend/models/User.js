@@ -15,11 +15,10 @@ const userSchema = new mongoose.Schema({
     },
     phoneNumber: {
         type: String,
-        required: true
     },
     country: {
         type: String,
-        required: true
+        default:'India'
     },
     profileImage: {
         url: String,

@@ -9,7 +9,6 @@ export const AuthContextProvider = (props) => {
     const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true)
 
-    // console.log("user", user)
 
     // to verify user 
     async function verifyUser() {
@@ -22,7 +21,6 @@ export const AuthContextProvider = (props) => {
 
             const { message, success, userData } = resposne.data;
             if (success) {
-                console.log(message)
                 setUser(userData)
             }
         }

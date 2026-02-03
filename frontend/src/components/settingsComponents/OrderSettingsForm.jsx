@@ -8,8 +8,7 @@ import { SettingsContext } from '../../context/SettingsContext';
 
 const OrderSettingsForm = () => {
 
-
-    const { fetchSettings, settings, setSettings } = useContext(SettingsContext)
+    const { settings } = useContext(SettingsContext)
     const [loading, setLoading] = useState(false)
 
     const {
@@ -25,7 +24,6 @@ const OrderSettingsForm = () => {
             minOrderAmount: '',
         },
     });
-
 
     // Update form when settings load
     useEffect(() => {
@@ -61,7 +59,6 @@ const OrderSettingsForm = () => {
 
             const { message, success } = resposne.data;
             if (success) {
-                console.log(message)
                 toast(message, {
                     position: "top-center",
                     autoClose: 1500,
@@ -92,7 +89,6 @@ const OrderSettingsForm = () => {
             setLoading(false)
         }
     }
-
 
     return (
         <section className="bg-white rounded-2xl shadow-sm border p-6 space-y-6">

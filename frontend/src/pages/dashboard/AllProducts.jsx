@@ -1,10 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-// import Navbar from '../../components/Navbar'
-// import Footer from '../../components/Footer'
 import Sidebar from '../../components/Sidebar'
-import { assets } from '../../assets/assets'
 import { Link } from 'react-router-dom'
-import { Plus } from 'lucide-react'
 import { ProductContext } from '../../context/ProductsContext'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
@@ -13,8 +9,6 @@ import { ToastContainer, toast } from 'react-toastify';
 const AllProducts = () => {
 
     const { fetchProducts, allProducts, setAllProducts, page, setPage, totalPages, totalOrders } = useContext(ProductContext);
-    console.log("allProducts", allProducts)
-
 
     const [Filter, setFilter] = useState('All')
     const [SortBy, setSortBy] = useState('')
@@ -89,7 +83,6 @@ const AllProducts = () => {
         <div className='flex max-h-screen'>
             <Sidebar />
             <div className="w-full pt-6 px-6 ">
-                {/* <h1 className="text-2xl font-semibold mb-6">Products</h1> */}
 
                 {/* FILTERS & SORTING */}
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 p-4 bg-white shadow rounded-lg">
@@ -151,7 +144,7 @@ const AllProducts = () => {
                 </Link>
 
                 {/* products  */}
-                <div className="space-y-4 overflow-y-auto max-h-[calc(100vh-265px)]">
+                <div className="space-y-4 overflow-y-auto max-h-[calc(100vh-265px)] no-scrollbar">
                     {allProducts.map((product) => (
                         <div
                             key={product._id}

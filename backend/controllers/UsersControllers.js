@@ -2,7 +2,6 @@ const UsersModel = require('../models/User')
 const bcrypt = require('bcrypt')
 
 
-
 const formatName = (fullName) => {
     return fullName
         .trim()
@@ -22,13 +21,14 @@ const fetchUsersControllers = async (req, res) => {
             search = "",
             sort = "newest"
         } = req.query;
-        // console.log(req.query)
+
         const skip = (page - 1) * limit;
 
-        let query = {
-            role: status   // role: "user"
-        };
+        let query = {};
 
+        if (status) {
+            query.role = status;
+        }
 
         // SEARCH
         if (search.trim() !== "") {
@@ -58,10 +58,9 @@ const fetchUsersControllers = async (req, res) => {
 
         const totalUsers = await UsersModel.countDocuments(query);
 
-        const users = await UsersModel.find().sort(sortQuery)
+        const users = await UsersModel.find(query).sort(sortQuery)
             .skip(skip)
             .limit(Number(limit));
-        // console.log(users)
 
         return res.json({
             message: "Users fetched successfully", success: true, users, pagination: {
@@ -132,6 +131,5 @@ const editProfileControllers = async (req, res) => {
         res.status(500).json({ message: 'editProfileControllers request fails', success: false });
     }
 }
-
 
 module.exports = { fetchUsersControllers, deleteUsersControllers, editProfileControllers }

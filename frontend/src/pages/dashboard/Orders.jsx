@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 const Orders = () => {
 
     const { fetchOrders, allOrders, setAllOrders, page, setPage, totalPages, totalOrders } = useContext(OrdersContext)
-    console.log("all orders", allOrders)
     const navigate = useNavigate();
 
     // Status Colors
@@ -19,6 +18,7 @@ const Orders = () => {
         Pending: "bg-yellow-100 text-yellow-700",
         Shipped: "bg-blue-100 text-blue-700",
         Delivered: "bg-green-100 text-green-700",
+        Confirmed: "bg-pink-100 text-pink-700",
         Cancelled: "bg-red-100 text-red-700",
     };
 
@@ -102,8 +102,8 @@ const Orders = () => {
         <div className='flex h-screen overflow-hidden'>
             <Sidebar />
             <div className="w-full pt-6 px-6">
-                {/* <h1 className="text-2xl font-semibold mb-6">Orders</h1> */}
-                {/* FILTERS & SORTING & search bar */}
+
+                {/* FILTERS & SORTING & SEARCH BAR */}
                 <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6 p-4 bg-white shadow rounded-lg">
 
                     {/* FILTER */}
@@ -112,6 +112,7 @@ const Orders = () => {
                         <select onChange={handleChange} className="border px-3 py-2 rounded-lg w-48">
                             <option value="All">All</option>
                             <option value="Pending">Pending</option>
+                            <option value="Confirmed">Confirmed</option>
                             <option value="Shipped">Shipped</option>
                             <option value="Delivered">Delivered</option>
                             <option value="Cancelled">Cancelled</option>
@@ -156,7 +157,7 @@ const Orders = () => {
                 </div>
 
                 {/* orders */}
-                <div className="space-y-4 max-h-[calc(100vh-220px)] overflow-y-auto">
+                <div className="space-y-4 max-h-[calc(100vh-220px)] overflow-y-auto no-scrollbar">
                     {allOrders.map((order) => (
                         <div
                             key={order._id}

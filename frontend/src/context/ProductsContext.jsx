@@ -30,7 +30,6 @@ export const ProductContextProvider = (props) => {
 
             const { message, success, products, pagination } = resposne.data;
             if (success) {
-                console.log(message)
                 setAllProducts(products)
                 setTotalPages(pagination.totalPages)
                 setTotalOrders(pagination.totalOrders)
