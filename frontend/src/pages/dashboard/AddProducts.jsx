@@ -10,7 +10,6 @@ const AddProducts = () => {
 
 
     const { fetchProducts, allProducts, setAllProducts } = useContext(ProductContext)
-
     const { productId } = useParams();
     const isEditMode = Boolean(productId);
 
@@ -22,9 +21,14 @@ const AddProducts = () => {
     const [mainImage, setMainImage] = useState(null);
     const [subImages, setSubImages] = useState([null, null, null, null]);
 
+    const [allSizes, setAllSizes] = useState([])
 
-    const [size, setSize] = useState("")
-    const [sizeQyt, setSizeQyt] = useState("")
+    const [Sizes, setSizes] = useState({
+        size: '',
+        stock: ''
+    })
+
+    const [editedSize, setEditedSize] = useState(null)
 
     const [Loading, setLoading] = useState(false)
 
@@ -226,8 +230,7 @@ const AddProducts = () => {
         formData.append("description", productDetails.description)
         formData.append("isActive", checkBoxes.isActive)
         formData.append("featured", checkBoxes.featured)
-        formData.append("size", size)
-        formData.append("sizeQyt", sizeQyt)
+        formData.append("allSizes", JSON.stringify(allSizes))
 
         // images
         if (mainImage) {
@@ -248,23 +251,49 @@ const AddProducts = () => {
     }
 
     function handleSize(e) {
-        setSize(e.target.value)
-    }
-
-    function handleSizeQyt(e) {
-        setSizeQyt(e.target.value)
+        setSizes((prev) => ({ ...prev, [e.target.name]: e.target.value }))
     }
 
     // to handel size in edit mode 
-    function editSize(clickedSize, clickedStock) {
-        setSize(clickedSize)
-        setSizeQyt(clickedStock)
+    function editSize(clickedSize, clickedStock, index) {
+        setSizes({ size: clickedSize, sizeQyt: clickedStock })
+        setEditedSize(index)
     }
 
     // to clear size field 
     function handleClear() {
-        setSize('')
-        setSizeQyt('')
+        setSizes({ size: '', stock: '' })
+    }
+
+    function handleAddSize(Sizes) {
+        if (!Sizes.size || !Sizes.stock) {
+            toast('fill all size fields first', {
+                position: "top-center",
+                autoClose: 1500,
+                hideProgressBar: false,
+                closeOnClick: false,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
+            return
+        }
+
+        if (editedSize !== null) {
+            // UPDATE EXISTING SIZE
+            setAllSizes(prev =>
+                prev.map((item, i) =>
+                    i === editedSize ? Sizes : item
+                )
+            );
+            setEditedSize(null);
+        } else {
+            // ADD NEW SIZE
+            setAllSizes(prev => [...prev, Sizes]);
+        }
+
+        setSizes({ size: '', stock: '' })
     }
 
     return (
@@ -359,6 +388,7 @@ const AddProducts = () => {
                                         name='price'
                                         onChange={handleChange}
                                         type="number"
+                                        min='0'
                                         className="border border-gray-300 p-3 rounded-lg outline-none"
                                         placeholder="₹ Price"
                                     />
@@ -380,18 +410,31 @@ const AddProducts = () => {
                             {/* sizes */}
                             <div className="border-2 rounded-xl p-4 space-y-4">
 
+                                {/* display sizes */}
                                 <div className="flex gap-3 flex-wrap">
                                     {/* Size Card */}
-                                    {product?.productSizes.map((sizes, index) => {
-                                        return (<div key={index} onClick={() => { editSize(sizes.size, sizes.stock) }} className="w-16 cursor-pointer border rounded-lg overflow-hidden text-center shadow-sm">
+
+                                    {isEditMode ? product?.productSizes.map((items, index) => {
+                                        return (<div key={index} onClick={() => { editSize(items.size, items.stock, index) }} className="w-16 cursor-pointer border rounded-lg overflow-hidden text-center shadow-sm">
                                             <div className="bg-blue-600 text-white font-semibold py-1">
-                                                {sizes.size}
+                                                {items.size}
                                             </div>
                                             <div className="py-1 text-sm font-medium">
-                                                Qty: {sizes.stock}
+                                                Qty: {items.stock}
+                                            </div>
+                                        </div>)
+                                    }) : allSizes?.map((items, index) => {
+                                        return (<div key={index} onClick={() => { editSize(items.size, items.stock, index) }} className="w-16 cursor-pointer border rounded-lg overflow-hidden text-center shadow-sm">
+                                            <div className="bg-blue-600 text-white font-semibold py-1">
+                                                {items.size}
+                                            </div>
+                                            <div className="py-1 text-sm font-medium">
+                                                Qty: {items.stock}
                                             </div>
                                         </div>)
                                     })}
+
+
 
                                 </div>
 
@@ -402,7 +445,7 @@ const AddProducts = () => {
                                         placeholder="Size (e.g. S, M, L)"
                                         className="border rounded-md px-3 py-2 w-32"
                                         onChange={handleSize}
-                                        value={size}
+                                        value={Sizes.size}
                                         name='size'
                                     />
 
@@ -411,9 +454,9 @@ const AddProducts = () => {
                                         min="0"
                                         placeholder="Stock"
                                         className="border rounded-md px-3 py-2 w-28"
-                                        onChange={handleSizeQyt}
-                                        value={sizeQyt}
-                                        name='sizeQyt'
+                                        onChange={handleSize}
+                                        value={Sizes.stock}
+                                        name='stock'
                                     />
 
                                     <div
@@ -425,11 +468,12 @@ const AddProducts = () => {
                                 </div>
 
                                 {/* ADD SIZE BUTTON */}
-                                <button
-                                    className="text-blue-600 font-medium"
+                                <p
+                                    onClick={() => { handleAddSize(Sizes) }}
+                                    className="text-blue-600 font-medium cursor-pointer"
                                 >
-                                    + Add another size
-                                </button>
+                                    {editedSize !== null ? 'Edit size' : '+ Add another size'}
+                                </p>
                             </div>
 
                             {/* description */}

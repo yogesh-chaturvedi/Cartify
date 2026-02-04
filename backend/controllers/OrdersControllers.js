@@ -2,7 +2,6 @@ const express = require('express')
 const mongoose = require('mongoose')
 const OrdersModel = require('../models/Orders')
 const UserModel = require('../models/User')
-const CartModel = require('../models/Cart')
 
 // to fetch orders 
 const fetchOrdersController = async (req, res) => {

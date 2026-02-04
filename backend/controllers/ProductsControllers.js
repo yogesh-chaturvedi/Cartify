@@ -5,7 +5,14 @@ const cloudinary = require('../cloudinary')
 // to add new products
 const addProductsControllers = async (req, res) => {
     try {
-        const { title, price, category, description, isActive, featured, size, sizeQyt } = req.body;
+        const { title, price, category, description, isActive, featured, allSizes } = req.body;
+
+        productSizes = JSON.parse(req.body.allSizes);
+
+        productSizes = productSizes.map(item => ({
+            size: item.size.toUpperCase(),
+            stock: Number(item.stock)
+        }));
 
         // ✅ MAIN IMAGE
         const mainImage = req.files?.mainImage?.[0]
@@ -26,12 +33,7 @@ const addProductsControllers = async (req, res) => {
         const product = new ProductModels({
             productTitle: title,
             productPrice: price,
-            productSizes: [
-                {
-                    size: size.toUpperCase(),
-                    stock: sizeQyt
-                }
-            ],
+            productSizes: productSizes,
             productDescription: description,
             mainImage: mainImage,
             images: images,
