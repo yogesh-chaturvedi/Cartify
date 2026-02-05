@@ -21,15 +21,12 @@ const Product = () => {
         window.scrollTo(0, 0)
     }, [])
 
-    console.log('cart', cart)
-
     const [selectedSize, setSelectedSize] = useState('')
 
     const productId = useParams();
     const location = useLocation();
 
     const [product, setProduct] = useState(null)
-    // console.log(product)
 
     const [firstImage, setfirstImage] = useState(null)
 
@@ -196,7 +193,7 @@ const Product = () => {
                         <div className="text-black leading-relaxed flex gap-1 items-center">
                             sizes: {availableSizes?.map((sizes, index) => {
                                 return (<div key={index} onClick={() => { handleSize(sizes) }} className="w-16 cursor-pointer border rounded-lg overflow-hidden text-center shadow-sm">
-                                    <div className={`${selectedSize === sizes.size ? 'bg-blue-700' : 'bg-blue-600'} text-white font-semibold py-1`}>
+                                    <div className={`${selectedSize === sizes.size ? 'bg-blue-800' : 'bg-blue-600'} text-white font-semibold py-1`}>
                                         {sizes.size}
                                     </div>
                                 </div>)
