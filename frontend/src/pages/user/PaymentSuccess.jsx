@@ -65,7 +65,7 @@ const PaymentSuccess = () => {
 
     <div>
       <Navbar />
-      <div className="min-h-[70vh] flex items-center justify-center px-4">
+      <div className="min-h-[calc(100vh-60px)] flex items-center justify-center px-4">
         {status === "loading" && (
           <div className="text-center space-y-4">
             <Loader2 className="w-12 h-12 animate-spin mx-auto text-gray-600" />
@@ -125,8 +125,8 @@ const PaymentSuccess = () => {
           </div>
         )}
 
-        <Footer />
       </div>
+      <Footer />
     </div>
   )
 }
