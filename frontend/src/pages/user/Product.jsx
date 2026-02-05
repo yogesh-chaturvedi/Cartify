@@ -1,18 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { assets } from '../../assets/assets';
 import Navbar from '../../components/Navbar';
 import Footer from '../../components/Footer';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { ProductContext } from '../../context/ProductsContext';
-// import { Swiper, SwiperSlide } from "swiper/react";
-// import "swiper/css";
-// import "swiper/css/navigation";
-// import "swiper/css/pagination";
-// import { Autoplay } from "swiper/modules";
 import axios from 'axios';
-
-// import { Navigation, Pagination } from "swiper/modules";
 import { CartContext } from '../../context/CartContext';
 import { AuthContext } from '../../context/AuthContext';
 import { getProductCardImage, getMainProductImage, getThumbnailImage } from '../../utils/cloudinary';
@@ -29,17 +21,15 @@ const Product = () => {
         window.scrollTo(0, 0)
     }, [])
 
+    console.log('cart', cart)
+
     const [selectedSize, setSelectedSize] = useState('')
 
     const productId = useParams();
-    // console.log('productId', productId.id)
-
     const location = useLocation();
-    // console.log("location", location.state)
-    // const product = location.state
 
     const [product, setProduct] = useState(null)
-    console.log(product)
+    // console.log(product)
 
     const [firstImage, setfirstImage] = useState(null)
 
@@ -72,22 +62,9 @@ const Product = () => {
 
 
     // to add and update cart 
-    async function addToCart(productId, selectedSize, quantity = 1) {
+    async function addToCart(product, productId, selectedSize, quantity = 1) {
 
-        if (user?.role === "admin") {
-            toast("Admin can not buy there own products", {
-                position: "top-center",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
-            return
-        }
-
+        // check if size is available or not 
         if (selectedSize === "") {
             toast("Please select size", {
                 position: "top-center",
@@ -102,6 +79,25 @@ const Product = () => {
             return
         }
 
+        // deepcopy for rollback
+        const prevCart = JSON.parse(JSON.stringify(cart));
+
+        setCart(prev => {
+            if (!prev) return prev;
+
+            const items = [...prev.items];
+            const index = items.findIndex(
+                item => item.product._id === productId && item.size === selectedSize);
+
+            if (index > -1) {
+                items[index] = { ...items[index], quantity: items[index].quantity + quantity };
+            } else {
+                items.push({ product, size: selectedSize, quantity, priceAtThatTime: product.productPrice });
+            }
+
+            return { ...prev, items };
+        })
+
         try {
             const response = await axios({
                 method: 'post',
@@ -109,23 +105,9 @@ const Product = () => {
                 data: { selectedSize, quantity },
                 withCredentials: true
             })
-            const { message, success } = response.data;
-            if (success) {
-                console.log(message);
-                fetchCart();
-                toast(message, {
-                    position: "top-center",
-                    autoClose: 1500,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                });
-            }
         }
         catch (error) {
+            setCart(prevCart)
             console.error("addToCart error", error)
             const message = error.response?.data?.message;
             toast(message, {
@@ -150,8 +132,6 @@ const Product = () => {
     return (
 
         <div>
-
-            {/* <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" /> */}
 
             <Navbar />
 
@@ -224,7 +204,7 @@ const Product = () => {
                         </div>
 
                         <button
-                            onClick={() => addToCart(product?._id, selectedSize)}
+                            onClick={() => addToCart(product, product?._id, selectedSize)}
                             className="bg-blue-600 text-white w-full py-3 rounded-lg hover:bg-blue-700 transition font-medium"
                         >
                             Add to Cart

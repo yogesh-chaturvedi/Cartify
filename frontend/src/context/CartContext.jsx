@@ -10,7 +10,6 @@ export const CartContextProvider = (props) => {
     const [cart, setCart] = useState(null);
     const { loading, user } = useContext(AuthContext)
 
-
     // to fetch user's cart 
     async function fetchCart() {
         try {
@@ -31,8 +30,7 @@ export const CartContextProvider = (props) => {
     }
 
     useEffect(() => {
-        if (loading || !user) return
-        if (user.role !== "user") return
+        if (loading || !user || user.role !== "user") return
         fetchCart()
     }, [user, loading])
 

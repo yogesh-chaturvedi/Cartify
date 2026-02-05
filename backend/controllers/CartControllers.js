@@ -154,10 +154,10 @@ const handleQuantityController = async (req, res) => {
         // if action is decrease then decrease the quantity 
         if (action === "decrease") {
             if (cart.items[itemIndex].quantity > 1) {
-                cart.items[itemIndex].quantity -= 1; //decrease by 1
+                cart.items[itemIndex].quantity -= 1;
             }
             else {
-                cart.items.splice(itemIndex, 1); // remove item
+                return res.status(400).json({ message: "Minimum quantity should be 1", success: false });
             }
         }
 

@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
 import { CartContext } from '../../context/CartContext'
@@ -11,8 +11,20 @@ const Cart = () => {
     const { fetchCart, cart, setCart } = useContext(CartContext)
 
     const navigate = useNavigate()
+
     // to remove product from cart
     async function handleRemove(productId, itemSize) {
+
+        const prevCart = JSON.parse(JSON.stringify(cart));
+
+        setCart(prev => {
+            if (!prev) return prev;
+
+            const items = prev.items.filter(item => !(item.product._id === productId && item.size === itemSize));
+
+            return { ...prev, items };
+        });
+
         try {
             const response = await axios({
                 method: 'delete',
@@ -20,22 +32,9 @@ const Cart = () => {
                 data: { itemSize },
                 withCredentials: true
             })
-            const { message, success, userCart } = response.data;
-            if (success) {
-                fetchCart();
-                toast(message, {
-                    position: "top-center",
-                    autoClose: 1500,
-                    hideProgressBar: false,
-                    closeOnClick: false,
-                    pauseOnHover: true,
-                    draggable: true,
-                    progress: undefined,
-                    theme: "dark",
-                });
-            }
         }
         catch (error) {
+            setCart(prevCart)
             console.error('handleRemove', error)
             const message = error.response?.data?.message;
             toast(message, {
@@ -52,6 +51,35 @@ const Cart = () => {
     }
 
     async function handleQuantity(productId, itemSize, action) {
+
+        // deepcopy of cart fro roolback 
+        const prevCart = JSON.parse(JSON.stringify(cart))
+
+        // increase,decrease
+        setCart(prev => {
+            if (!prev) return prev;
+
+            const items = prev.items.map(item => {
+                if (item.product._id === productId && item.size === itemSize) {
+                    const newQty =
+                        action === "increase"
+                            ? item.quantity + 1
+                            : Math.max(1, item.quantity - 1);
+
+                    return {
+                        ...item,
+                        quantity: newQty
+                    };
+                }
+                return item;
+            });
+
+            return {
+                ...prev,
+                items
+            };
+        });
+
         try {
             const response = await axios({
                 method: 'put',
@@ -59,12 +87,9 @@ const Cart = () => {
                 data: { itemSize, action },
                 withCredentials: true
             })
-            const { message, success, userCart } = response.data;
-            if (success) {
-                setCart(userCart)
-            }
         }
         catch (error) {
+            setCart(prevCart)
             console.error('handleQuantity', error)
             const message = error.response?.data?.message;
             toast(message, {
@@ -80,7 +105,6 @@ const Cart = () => {
         }
     }
 
-    console.log("cart", cart)
     function handleCheckout() {
         if (cart.items.length === 0) {
             toast("You can not proceed with empty cart", {
@@ -99,10 +123,10 @@ const Cart = () => {
         }
     }
 
+    console.log("cart", cart)
+
     return (
         <div>
-
-            {/* <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" /> */}
 
             <Navbar />
 
@@ -170,7 +194,10 @@ const Cart = () => {
 
                                 {/* Price & Remove Button */}
                                 <div className="flex flex-col justify-between text-right">
+                                    {/* price */}
                                     <p className="text-lg font-semibold">₹{p.product.productPrice}</p>
+
+                                    {/* remove button */}
                                     <button
                                         onClick={() => handleRemove(p.product._id, p.size)}
                                         className="text-red-600 text-sm mt-2 hover:underline"
