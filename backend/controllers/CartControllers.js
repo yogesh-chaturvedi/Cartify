@@ -132,7 +132,14 @@ const handleQuantityController = async (req, res) => {
     try {
 
         const productId = req.params.productId;
-        const { itemSize, action } = req.body;
+        const { itemSize, finalQuantity } = req.body;
+
+        if (finalQuantity < 1) {
+            return res.status(400).json({
+                success: false,
+                message: "Quantity cannot be less than 1"
+            });
+        }
 
         const cart = await CartModel.findOne({ user: req.user._id });
 
@@ -146,20 +153,8 @@ const handleQuantityController = async (req, res) => {
             return res.status(400).json({ message: "Product not found in cart", success: false });
         }
 
-        // if action is increase then increase the quantity 
-        if (action === "increase") {
-            cart.items[itemIndex].quantity = cart.items[itemIndex].quantity + 1;
-        }
-
-        // if action is decrease then decrease the quantity 
-        if (action === "decrease") {
-            if (cart.items[itemIndex].quantity > 1) {
-                cart.items[itemIndex].quantity -= 1;
-            }
-            else {
-                return res.status(400).json({ message: "Minimum quantity should be 1", success: false });
-            }
-        }
+        // updating cart
+        cart.items[itemIndex].quantity = finalQuantity;     // idempotent 
 
         // Recalculate totalPrice
         cart.totalPrice = cart.items.reduce(
@@ -172,12 +167,12 @@ const handleQuantityController = async (req, res) => {
         const userCart = await CartModel.findOne({ user: req.user._id })
             .populate("items.product");
 
-        return res.status(200).json({ message: `Quantity ${action} successfully`, success: true, userCart });
+        return res.status(200).json({ message: `Quantity updated successfully`, success: true, userCart });
 
     }
     catch (error) {
         console.error('handleQuantityController error', error);
-        res.status(500).json({ message: `Failed to ${action} cart`, success: false });
+        res.status(500).json({ message: `Failed to update cart`, success: false });
     }
 }
 

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
 import { CartContext } from '../../context/CartContext'
@@ -11,6 +11,8 @@ const Cart = () => {
     const { fetchCart, cart, setCart } = useContext(CartContext)
 
     const navigate = useNavigate()
+
+    const debounceTimers = useRef({})
 
     // to remove product from cart
     async function handleRemove(productId, itemSize) {
@@ -54,6 +56,7 @@ const Cart = () => {
 
         // deepcopy of cart fro roolback 
         const prevCart = JSON.parse(JSON.stringify(cart))
+        let finalQuantity;
 
         // increase,decrease
         setCart(prev => {
@@ -61,48 +64,56 @@ const Cart = () => {
 
             const items = prev.items.map(item => {
                 if (item.product._id === productId && item.size === itemSize) {
-                    const newQty =
+                     finalQuantity =
                         action === "increase"
                             ? item.quantity + 1
                             : Math.max(1, item.quantity - 1);
 
                     return {
                         ...item,
-                        quantity: newQty
+                        quantity: finalQuantity
                     };
                 }
                 return item;
             });
 
-            return {
-                ...prev,
-                items
-            };
+            return { ...prev, items };
         });
 
-        try {
-            const response = await axios({
-                method: 'put',
-                url: `${import.meta.env.VITE_BASE_URL}/cart/handleQuantity/${productId}`,
-                data: { itemSize, action },
-                withCredentials: true
-            })
+
+        // backend sync 
+        const key = `${productId}-${itemSize}`;
+
+        // clear old timer if user clicks again 
+        if (debounceTimers.current[key]) {
+            clearTimeout(debounceTimers.current[key])
         }
-        catch (error) {
-            setCart(prevCart)
-            console.error('handleQuantity', error)
-            const message = error.response?.data?.message;
-            toast(message, {
-                position: "top-center",
-                autoClose: 1500,
-                hideProgressBar: false,
-                closeOnClick: false,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
-        }
+
+        debounceTimers.current[key] = setTimeout(async () => {
+            try {
+                const response = await axios({
+                    method: 'put',
+                    url: `${import.meta.env.VITE_BASE_URL}/cart/handleQuantity/${productId}`,
+                    data: { itemSize,finalQuantity },
+                    withCredentials: true
+                })
+            }
+            catch (error) {
+                setCart(prevCart)
+                console.error('handleQuantity', error)
+                const message = error.response?.data?.message;
+                toast(message, {
+                    position: "top-center",
+                    autoClose: 1500,
+                    hideProgressBar: false,
+                    closeOnClick: false,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+            }
+        }, 500);
     }
 
     function handleCheckout() {

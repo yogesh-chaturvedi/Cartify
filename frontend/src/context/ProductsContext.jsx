@@ -21,6 +21,7 @@ export const ProductContextProvider = (props) => {
         search = ""
     }) {
         try {
+
             const resposne = await axios({
                 method: 'get',
                 url: `${import.meta.env.VITE_BASE_URL}/product/fetch`,

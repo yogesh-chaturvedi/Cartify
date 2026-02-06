@@ -36,7 +36,7 @@ app.use(
 
 
 app.use(cors({
-    origin: "https://cartify-ten-eta.vercel.app",
+    origin: "http://localhost:5173",
     credentials: true
 }))
 
