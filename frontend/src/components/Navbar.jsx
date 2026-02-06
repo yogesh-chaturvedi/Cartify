@@ -9,6 +9,7 @@ import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import { CartContext } from '../context/CartContext';
 import { SettingsContext } from '../context/SettingsContext';
+import { assets } from '../assets/assets';
 
 
 
@@ -94,7 +95,8 @@ const Navbar = () => {
 
                     {/* Logo */}
                     <div className="flex items-center space-x-2">
-                        < Leaf color='black' size={36} />
+                        {/* < Leaf color='black' size={36} /> */}
+                        <img src={assets.logo} alt="logo" className='h-10 rounded-md ' />
                         <span className="font-bold text-xl">{settings?.[0]?.business.brandName}</span>
                     </div>
 

@@ -7,6 +7,7 @@ export const ProductContext = createContext()
 export const ProductContextProvider = (props) => {
 
     const [allProducts, setAllProducts] = useState([]);
+    const [loading, setLoading] = useState(false)
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [totalOrders, setTotalOrders] = useState(0);
@@ -21,6 +22,8 @@ export const ProductContextProvider = (props) => {
         search = ""
     }) {
         try {
+
+            setLoading(true);
 
             const resposne = await axios({
                 method: 'get',
@@ -39,6 +42,9 @@ export const ProductContextProvider = (props) => {
         catch (error) {
             console.error('fetchProducts error', error)
         }
+        finally {
+            setLoading(false)
+        }
     }
 
 
@@ -46,7 +52,7 @@ export const ProductContextProvider = (props) => {
         fetchProducts({ page: 1 })
     }, [])
 
-    const value = { fetchProducts, allProducts, setAllProducts, page, setPage, totalPages, totalOrders }
+    const value = { fetchProducts, allProducts, setAllProducts, page, setPage, totalPages, totalOrders,loading, setLoading }
 
     return (
         <ProductContext.Provider value={value}>

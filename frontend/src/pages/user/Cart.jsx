@@ -54,8 +54,9 @@ const Cart = () => {
 
     async function handleQuantity(productId, itemSize, action) {
 
-        // deepcopy of cart fro roolback 
-        const prevCart = JSON.parse(JSON.stringify(cart))
+        // deepcopy of cart for roolback 
+        const prevCart = JSON.parse(JSON.stringify(cart));
+
         let finalQuantity;
 
         // increase,decrease
@@ -64,7 +65,7 @@ const Cart = () => {
 
             const items = prev.items.map(item => {
                 if (item.product._id === productId && item.size === itemSize) {
-                     finalQuantity =
+                    finalQuantity =
                         action === "increase"
                             ? item.quantity + 1
                             : Math.max(1, item.quantity - 1);
@@ -94,7 +95,7 @@ const Cart = () => {
                 const response = await axios({
                     method: 'put',
                     url: `${import.meta.env.VITE_BASE_URL}/cart/handleQuantity/${productId}`,
-                    data: { itemSize,finalQuantity },
+                    data: { itemSize, finalQuantity },
                     withCredentials: true
                 })
             }

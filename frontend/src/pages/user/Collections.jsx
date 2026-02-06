@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
 import CollectionsComp from '../../components/CollectionsComp'
@@ -7,6 +7,7 @@ import { ProductContext } from '../../context/ProductsContext'
 const Collections = () => {
 
     const { fetchProducts, allProducts, setAllProducts, page, setPage, totalPages, totalOrders } = useContext(ProductContext)
+    const debounceRef = useRef();
 
     // to scroll at top when component mount
     useEffect(() => {
@@ -40,13 +41,23 @@ const Collections = () => {
         setPage(1);
     }, [Filter, SortBy])
 
+
+    //  debounce to prevent multiple api calls
     useEffect(() => {
-        fetchProducts({
-            page,
-            status: Filter,
-            sort: SortBy,
-            search: searchedProduct
-        })
+
+        if (debounceRef.current) {
+            clearTimeout(debounceRef.current);
+        }
+
+        debounceRef.current = setTimeout(() => {
+            fetchProducts({
+                page,
+                status: Filter,
+                sort: SortBy,
+                search: searchedProduct
+            })
+        }, 500);
+
     }, [page, Filter, SortBy])
 
 
