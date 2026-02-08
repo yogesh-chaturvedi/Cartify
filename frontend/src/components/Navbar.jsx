@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Leaf, ListOrdered, ShoppingCart } from "lucide-react"
+import { Hamburger, HamburgerIcon, ListOrdered, Menu, ShoppingCart } from "lucide-react"
 import { User, LayoutDashboard, LogOut, X } from "lucide-react";
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { useContext } from 'react';
@@ -10,6 +10,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import { CartContext } from '../context/CartContext';
 import { SettingsContext } from '../context/SettingsContext';
 import { assets } from '../assets/assets';
+import NavSidebar from './NavSidebar';
 
 
 
@@ -23,6 +24,8 @@ const Navbar = () => {
 
     let navigate = useNavigate();
     const [isOpen, setIsOpen] = useState(false)
+
+    const [openMenu, setOpenMenu] = useState(false)
 
     // run verify function 
     useEffect(() => {
@@ -95,7 +98,6 @@ const Navbar = () => {
 
                     {/* Logo */}
                     <div className="flex items-center space-x-2">
-                        {/* < Leaf color='black' size={36} /> */}
                         <img src={assets.logo} alt="logo" className='h-10 rounded-md ' />
                         <span className="font-bold text-xl">{settings?.[0]?.business.brandName}</span>
                     </div>
@@ -123,6 +125,11 @@ const Navbar = () => {
                                     {cart !== null ? (cart.items.length) : ("0")}
                                 </span>
                             </button>) : ('')}
+
+                            <button onClick={() => { setOpenMenu(prev => !prev) }} className='flex md:hidden'><Menu /></button>
+
+                            {openMenu && <NavSidebar openMenu={openMenu} onClose={() => setOpenMenu(false)} />}
+
                         </div>
                     ) : (<div className="flex space-x-4">
                         <button onClick={() => { navigateLogin() }} className="bg-transparent border border-white px-4 py-2 rounded hover:bg-white hover:text-blue-900 transition-colors">

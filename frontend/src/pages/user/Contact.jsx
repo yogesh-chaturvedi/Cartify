@@ -3,13 +3,11 @@ import { motion } from 'framer-motion'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
 import { useForm } from 'react-hook-form'
-import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
 import { SettingsContext } from '../../context/SettingsContext'
 
 const Contact = () => {
 
-    // const [loading, setLoading] = useState(false)
 
     const { fetchSettings, settings, setSettings } = useContext(SettingsContext)
 
@@ -17,58 +15,10 @@ const Contact = () => {
     const {
         register,
         handleSubmit,
-        watch,
         reset,
         formState: { errors },
     } = useForm()
 
-
-    // // submit function 
-    // async function onSubmit(data) {
-
-    //     try {
-    //         setLoading(true);
-    //         const response = await axios({
-    //             method: 'post',
-    //             url: `${import.meta.env.VITE_BASE_URL}/contact/send`,
-    //             data: data,
-    //             withCredentials: true
-    //         })
-    //         const { message, success } = response.data;
-    //         if (success) {
-    //             console.log(message)
-    //             toast(message, {
-    //                 position: "top-center",
-    //                 autoClose: 1500,
-    //                 hideProgressBar: false,
-    //                 closeOnClick: false,
-    //                 pauseOnHover: true,
-    //                 draggable: true,
-    //                 progress: undefined,
-    //                 theme: "dark",
-    //             });
-    //         }
-    //     }
-    //     catch (error) {
-    //         console.error('error', error);
-
-    //         const message = error.response?.data?.message
-    //         toast(message, {
-    //             position: "top-center",
-    //             autoClose: 1500,
-    //             hideProgressBar: false,
-    //             closeOnClick: false,
-    //             pauseOnHover: true,
-    //             draggable: true,
-    //             progress: undefined,
-    //             theme: "dark",
-    //         });
-    //     }
-    //     finally {
-    //         reset();
-    //         setLoading(false)
-    //     }
-    // }
 
     const onSubmit = async (data) => {
         setResult("Sending....");
@@ -106,10 +56,10 @@ const Contact = () => {
     return (
 
         <div>
-            {/* <ToastContainer position="top-center" autoClose={5000} hideProgressBar={false} newestOnTop={false} closeOnClick={false} rtl={false} pauseOnFocusLoss draggable pauseOnHover theme="dark" />*/}
+
             <Navbar />
 
-            <section className="w-full h-[calc(100vh-64px)] bg-white py-16 px-6 md:px-12 lg:px-20">
+            <section className="w-full min-h-[calc(100vh-64px)] bg-white py-16 px-6 md:px-12 lg:px-20">
                 <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
                     {/* LEFT SIDE – COMPANY INFO */}
                     <motion.div

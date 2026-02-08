@@ -8,7 +8,7 @@ const AboutUs = () => {
     return (
         <div>
             <Navbar />
-            <section className="w-full h-[calc(100vh-64px)] justify-center items-center flex bg-white py-16 px-6 md:px-12 lg:px-20">
+            <section className="w-full min-h-[calc(100vh-64px)] justify-center items-center flex bg-white py-16 px-6 md:px-12 lg:px-20">
                 {/* Container */}
                 <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     {/* Left Image */}
@@ -35,24 +35,17 @@ const AboutUs = () => {
 
 
                         <p className="text-gray-700 leading-relaxed text-lg">
-                            Welcome to our premium collection of handcrafted home mandirs. We
-                            specialize in bringing traditional craftsmanship into modern homes.
-                            Every temple we create reflects purity, devotion, and elegant design.
+                            Cartify is a modern e-commerce platform built with one simple idea in mind — making online shopping smooth, fast, and reliable. We focus on creating a seamless experience where users can explore products easily, find what they need quickly, and shop with confidence.
                         </p>
 
 
                         <p className="text-gray-700 leading-relaxed text-lg">
-                            Our mission is to provide beautifully designed mandirs that
-                            harmonize spirituality with modern home aesthetics. We ensure
-                            top-quality materials, expert craftsmanship, and timeless designs
-                            suitable for every household.
+                            At Cartify, we bring together a wide range of products across multiple categories, designed to meet everyday needs without unnecessary complexity. From browsing to checkout, every step is carefully crafted to be intuitive, responsive, and user-friendly across all devices.
                         </p>
 
 
                         <p className="text-gray-700 leading-relaxed text-lg">
-                            This space will later include the official content provided by your
-                            client. Feel free to share the real text when you receive it, and I
-                            will update the entire design accordingly.
+                            Quality matters to us — not just in products, but in experience. Cartify is built using modern technologies to ensure fast load times, secure interactions, and consistent performance. We continuously improve our platform to maintain reliability, scalability, and a smooth user journey.
                         </p>
                     </motion.div>
                 </div>

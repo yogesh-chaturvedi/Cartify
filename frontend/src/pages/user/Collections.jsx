@@ -3,10 +3,14 @@ import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
 import CollectionsComp from '../../components/CollectionsComp'
 import { ProductContext } from '../../context/ProductsContext'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 
 const Collections = () => {
 
     const { fetchProducts, allProducts, setAllProducts, page, setPage, totalPages, totalOrders } = useContext(ProductContext)
+
+    const [topFeatures, settopFeatures] = useState(false)
+
     const debounceRef = useRef();
 
     // to scroll at top when component mount
@@ -65,13 +69,13 @@ const Collections = () => {
         <div>
             <Navbar />
 
-            <section className="w-full flex relative flex-col min-h-[calc(100vh-64px)] bg-white py-12 px-6 md:px-12 lg:px-20">
+            <section className="w-full flex relative flex-col min-h-[calc(100vh-64px)] bg-white py-2 mb:py-12 px-6 md:px-12 lg:px-20">
 
-                {/* left side */}
+                {/* FILTER, SEARCH-BAR, SORTING */}
                 <div className="flex flex-col sticky top-16 z-30 md:flex-row md:items-center md:justify-between gap-4 mb-6 p-4 bg-white shadow rounded-lg">
 
                     {/* FILTER */}
-                    <div className="flex flex-col">
+                    <div className={`flex flex-col ${topFeatures ? 'block' : 'hidden'} md:block`}>
                         <label className="font-medium text-sm mb-1">Filter by category</label>
                         <select onChange={handleFilter} className="border px-3 py-2 rounded-lg w-48">
                             <option value="All">All</option>
@@ -81,29 +85,8 @@ const Collections = () => {
                         </select>
                     </div>
 
-                    {/* search bar */}
-                    <div className="flex w-full max-w-sm mt-5">
-                        <input
-                            onChange={handleSearch}
-                            type="text"
-                            placeholder="Search..."
-                            className="border border-gray-300 rounded-l-xl px-3 py-2 w-full outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                        />
-                        <button
-                            onClick={() => fetchProducts({
-                                page: 1,
-                                status: Filter,
-                                sort: SortBy,
-                                search: searchedProduct
-                            })}
-                            className="rounded-r-xl bg-blue-600 text-white px-4 py-2 hover:bg-blue-700 active:scale-95 transition-all"
-                        >
-                            Search
-                        </button>
-                    </div>
-
                     {/* SORT */}
-                    <div className="flex flex-col">
+                    <div className={`flex flex-col ${topFeatures ? 'block' : 'hidden'} md:block`}>
                         <label className="font-medium text-sm mb-1">Sort Orders</label>
                         <select
                             onChange={handleSort}
@@ -115,6 +98,37 @@ const Collections = () => {
                             <option value="date-new">Date: Newest First</option>
                             <option value="date-old">Date: Oldest First</option>
                         </select>
+                    </div>
+
+                    {/* Search Bar and dropdown button*/}
+                    <div className='flex'>
+                        {/* Search Bar */}
+                        <div className="flex w-full max-w-sm mt-5 mr-10">
+                            <input
+                                onChange={handleSearch}
+                                type="text"
+                                placeholder="Search..."
+                                className="border border-gray-300 rounded-l-xl px-3 py-2 w-full outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                            />
+                            <button
+                                onClick={() => fetchProducts({
+                                    page: 1,
+                                    status: Filter,
+                                    sort: SortBy,
+                                    search: searchedProduct
+                                })}
+                                className="rounded-r-xl bg-blue-600 text-white px-4 py-2 hover:bg-blue-700 active:scale-95 transition-all"
+                            >
+                                Search
+                            </button>
+                        </div>
+
+                        {/* dropdown button  */}
+                        <button
+                            onClick={() => { settopFeatures(prev => !prev) }}
+                            className="absolute bottom-4 right-0 bg-blue-600 text-white p-3 rounded-full shadow-lg hover:bg-blue-700 active:scale-95 transition md:hidden flex" >
+                            {topFeatures ? < ChevronUp size={20} /> : <ChevronDown size={20} />}
+                        </button>
                     </div>
 
                 </div>
@@ -152,10 +166,10 @@ const Collections = () => {
                     </button>
                 </div>
 
-            </section>
+            </section >
 
             <Footer />
-        </div>
+        </div >
     )
 }
 
