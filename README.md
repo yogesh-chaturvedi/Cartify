@@ -5,7 +5,7 @@
 
 ## 🌐 Live Demo
 
-👉 [Visit ShopNest Live](https://cartify-ten-eta.vercel.app/)
+👉 [Visit Cartify Live](https://cartify-ten-eta.vercel.app/)
 
 ---
 
