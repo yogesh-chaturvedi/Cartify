@@ -81,8 +81,8 @@ const loginController = async (req, res) => {
                 // setting token into cookie 
                 res.cookie("Token", token, {
                     httpOnly: true,
-                    secure: false,
-                    sameSite: "lax",
+                    secure: true,
+                    sameSite: "none",
                     maxAge: 7 * 24 * 60 * 60 * 1000
                 })
                 return res.status(200).json({
@@ -103,8 +103,8 @@ const logoutController = (req, res) => {
     try {
         res.clearCookie("Token", {
             httpOnly: true,
-            secure: false,
-            sameSite: "lax",
+            secure: true,
+            sameSite: "none",
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
         res.status(200).json({ message: 'logout successfully', success: true })
