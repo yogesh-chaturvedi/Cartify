@@ -9,12 +9,46 @@ const ChatBotController = async (req, res) => {
         const { productId } = req.params;
         const { input } = req.body;
 
-        const userQuestion = input
+        const userQuestion = input;
 
         if (!userQuestion || userQuestion.trim() === "") {
             return res.status(400).json({
                 message: "User question is required",
                 success: false
+            });
+        }
+
+        // input guard 
+        const isRelevantQuery = (query) => {
+            const blockedPatterns = [
+                /ignore/i,
+                /write code/i,
+                /python/i,
+                /javascript/i,
+                /program/i,
+                /hack/i
+            ];
+
+            return !blockedPatterns.some(pattern => pattern.test(query));
+        };
+
+        // output guard
+        const isValidResponse = (response) => {
+            const codePatterns = [
+                /def /i,
+                /function/i,
+                /console\.log/i,
+                /print\(/i,
+                /</, // html
+            ];
+
+            return !codePatterns.some(pattern => pattern.test(response));
+        };
+
+        if (!isRelevantQuery(userQuestion)) {
+            return res.json({
+                success: true,
+                reply: "I can only help with product-related questions."
             });
         }
 
@@ -67,6 +101,11 @@ Rules:
         });
 
         const reply = completion.choices[0].message.content;
+
+        // output guard
+        if (!isValidResponse(reply)) {
+            reply = "I can only answer product-related queries.";
+        }
 
         res.json({ success: true, reply });
 
