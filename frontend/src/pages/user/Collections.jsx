@@ -62,7 +62,7 @@ const Collections = () => {
             })
         }, 500);
 
-    }, [page, Filter, SortBy])
+    }, [page, Filter, SortBy, searchedProduct])
 
 
     return (
@@ -108,7 +108,7 @@ const Collections = () => {
                                 onChange={handleSearch}
                                 type="text"
                                 placeholder="Search..."
-                                className="border border-gray-300 rounded-l-xl px-3 py-2 w-full outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
+                                className="border border-gray-300 rounded-l-xl px-3 py-2 w-full outline-none  focus:ring-blue-500 focus:border-blue-500 transition"
                             />
                             <button
                                 onClick={() => fetchProducts({
