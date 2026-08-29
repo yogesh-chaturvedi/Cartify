@@ -91,7 +91,7 @@ Rules:
             `
 
         const completion = await groq.chat.completions.create({
-            model: "llama-3.1-8b-instant", // fast + free
+            model: "openai/gpt-oss-20b",
             messages: [
                 { role: "system", content: systemPrompt },
                 { role: "user", content: userPrompt, },
