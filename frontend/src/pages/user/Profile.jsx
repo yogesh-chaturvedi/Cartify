@@ -1,4 +1,4 @@
-import React, { use, useContext, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Navbar from '../../components/Navbar'
 import Footer from '../../components/Footer'
 import { User, Mail, Phone, MapPin, Edit, X, Camera } from "lucide-react";
@@ -19,7 +19,7 @@ const Profile = () => {
         formState: { errors },
     } = useForm()
 
-    const { verifyUser, user, setUser, loading } = useContext(AuthContext)
+    const { verifyUser, user } = useContext(AuthContext)
     // const { fetchUsers, allUsers, setAllUsers } = useContext(UsersContext)
 
     const [isEditMode, setIsEditMode] = useState(false)
@@ -86,7 +86,6 @@ const Profile = () => {
             })
             const { message, success } = response.data;
             if (success) {
-                console.log(message)
                 verifyUser();
                 setIsEditMode(false)
                 toast(message, {
@@ -240,6 +239,7 @@ const Profile = () => {
                                         message: "Full name must be at least 3 characters",
                                     },
                                 })}
+                                defaultValue={user?.name}
                                 type="text"
                                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                                 placeholder="Full Name"
@@ -261,7 +261,7 @@ const Profile = () => {
                             {/* password */}
                             <input
                                 {...register("newPassword", {
-                                    required: "New Password required",
+                                    // required: "New Password required",
                                     minLength: {
                                         value: 5,
                                         message: "Password must be at least 5 digits",
@@ -293,6 +293,7 @@ const Profile = () => {
                                         message: "Phone number must be at least 10 digits"
                                     }
                                 })}
+                                defaultValue={user?.phoneNumber}
                                 type="text"
                                 placeholder="Phone Number"
                                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
@@ -310,6 +311,7 @@ const Profile = () => {
                                         message: "Country name must be at least 3 characters",
                                     },
                                 })}
+                                defaultValue={user?.country}
                                 type="text"
                                 placeholder="Country"
                                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
