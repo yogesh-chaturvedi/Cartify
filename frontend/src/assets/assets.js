@@ -1,5 +1,5 @@
-import heroImage from "../assets/hero.jpg"
-import logo from "../assets/cartifyLogo.png"
+import heroImage from "../assets/hero.avif"
+import logo from "../assets/cartifyLogo.avif"
 
 
 export const assets = {
